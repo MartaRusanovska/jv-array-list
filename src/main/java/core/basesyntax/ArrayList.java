@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 public class ArrayList<T> implements List<T> {
     private static final int CAPACITY = 10;
+    private static final double GROW = 1.5;
 
     private Object[] innerArray = new Object[CAPACITY];
     private int size = 0;
@@ -11,7 +12,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value) {
         if (size == innerArray.length) {
-            Object[] innerArray2 = new Object[(int) (innerArray.length * 1.5)];
+            Object[] innerArray2 = new Object[(int) (innerArray.length * GROW)];
             System.arraycopy(innerArray, 0, innerArray2, 0, size);
             this.innerArray = innerArray2;
         }
@@ -22,8 +23,8 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value, int index) {
         if (size == innerArray.length) {
-            Object[] innerArray2 = new Object[(int) (innerArray.length * 1.5)];
-            System.arraycopy(innerArray, 0, innerArray2, 0, size);
+            Object[] innerArray2 = new Object[(int) (innerArray.length * GROW)];
+            System.arraycopy(innerArray, 0, innerArray2, 0, size - index);
             this.innerArray = innerArray2;
             add(value, index);
         } else if (index <= size && index >= 0) {
