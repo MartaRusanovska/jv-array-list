@@ -3,15 +3,16 @@ package core.basesyntax;
 import java.util.NoSuchElementException;
 
 public class ArrayList<T> implements List<T> {
-    private final int capacity = 1;
-    private Object[] innerArray = new Object[capacity];
+    private static final int CAPACITY = 10;
+
+    private Object[] innerArray = new Object[CAPACITY];
     private int size = 0;
 
     @Override
     public void add(T value) {
         if (size == innerArray.length) {
-            Object[] innerArray2 = new Object[innerArray.length * 2];
-            System.arraycopy(innerArray, 0, innerArray2, 0, innerArray.length);
+            Object[] innerArray2 = new Object[(int) (innerArray.length * 1.5)];
+            System.arraycopy(innerArray, 0, innerArray2, 0, size);
             this.innerArray = innerArray2;
         }
         innerArray[size] = value;
@@ -21,8 +22,8 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void add(T value, int index) {
         if (size == innerArray.length) {
-            Object[] innerArray2 = new Object[innerArray.length * 2];
-            System.arraycopy(innerArray, 0, innerArray2, 0, innerArray.length);
+            Object[] innerArray2 = new Object[(int) (innerArray.length * 1.5)];
+            System.arraycopy(innerArray, 0, innerArray2, 0, size);
             this.innerArray = innerArray2;
             add(value, index);
         } else if (index <= size && index >= 0) {
@@ -54,9 +55,7 @@ public class ArrayList<T> implements List<T> {
     @Override
     public void set(T value, int index) {
         if (index < size && index >= 0) {
-            for (int i = 0; i < innerArray.length; i++) {
-                innerArray[index] = value;
-            }
+            innerArray[index] = value;
         } else {
             throw new ArrayListIndexOutOfBoundsException("");
         }
@@ -66,9 +65,9 @@ public class ArrayList<T> implements List<T> {
     public T remove(int index) {
         if (index < size && index >= 0) {
             T remV = (T) innerArray[index];
-            size--;
             System.arraycopy(innerArray, index + 1, innerArray, index,
-                    innerArray.length - index - 1);
+                    size - index - 1);
+            size--;
             return remV;
         } else {
             throw new ArrayListIndexOutOfBoundsException("");
